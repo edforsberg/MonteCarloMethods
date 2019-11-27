@@ -1,42 +1,84 @@
 import numpy as np
+import math
+
 
 class Spin:
-
     def __init__(self, lattice_size, value, position):
         ls = lattice_size
         pos = position
         self.value = value
         q, r = divmod(pos, ls)
 
-        self.neig_l = r-1+q*ls if r-1 > 1 else lattice_size-1+q*ls
-        self.neig_r = r+1+q*ls if r+1 < ls else q*ls
-        self.neig_u = (q+1)*ls+r if q+1 < ls else r
-        self.neig_d = (q-1)*ls+r if q-1 > 0 else r+ls*(ls-1)
+        neig_l = r-1+q*ls if r-1 > 1 else lattice_size-1+q*ls
+        neig_r = r+1+q*ls if r+1 < ls else q*ls
+        neig_u = (q+1)*ls+r if q+1 < ls else r
+        neig_d = (q-1)*ls+r if q-1 > 0 else r+ls*(ls-1)
+
+        self.neighbours = [neig_l, neig_r, neig_u, neig_d]
+
 
 class Model:
+    def __init__(self, lattice_size, q, alpha, j, m):
+        self.ls = lattice_size
+        self.Q = q
+        self.J = j
+        self.M = m
+        self.H = 0
+        self.beta = j/alpha
+        self.alpha = alpha
 
-    def __init__(self, lattice_size):
-        self.lattice_size = lattice_size
-        ls_sqr = lattice_size**2
-
-        lattice = np.ndarray((ls_sqr,), dtype=np.object)
-        for i in range(ls_sqr):
+        self.ls_sqr = lattice_size**2
+        lattice = np.ndarray((self.ls_sqr,), dtype=np.object)
+        for i in range(self.ls_sqr):
             lattice[i] = Spin(lattice_size, 0, i)
         self.lattice = lattice
 
-
-
     def initialize(self, mode):
-        if mode == 'hot':
-            indexes = np.random.choice(list(range(self.lattice_size)), size=3, replace=False)
-            for i in indexes:
-                self.lattice[i] = 1
-        elif mode == 'cold':
-            return 2
+        if mode == 'cold':
+            for spin in self.lattice:
+                spin.value = 0
+
+            h = 0
+            for spin in self.lattice:
+                for n in spin.neighbours:
+                    if spin.value == self.lattice[n].value:
+                        h -= 1
+            self.H = h
+
+        elif mode == 'hot':
+            for spin in self.lattice:
+                spin.value = np.random.randint(0, self.Q)
+
+            h = 0
+            for spin in self.lattice:
+                for n in spin.neighbours:
+                    if spin.value == self.lattice[n].value:
+                        h -= 1
+            self.H = h
+
         else:
             return "mode must be set to cold or hot!"
 
-    def sweep(self, nr_sweeps):
+    def n_sweeps(self, nr_sweeps):
+        for n in range(nr_sweeps):
+            new_spin = np.random.randint(0, self.Q)
+            site = np.random.randint(0, self.ls_sqr)
+
+            new_lattice = self.lattice
+            new_lattice[site].value = new_spin
+            new_h = 0
+            for spin in new_lattice:
+                for n in spin.neighbours:
+                    if spin.value == self.lattice[n].value:
+                        new_h -= 1
+
+            delta = math.exp(-self.beta*(new_h-self.H))
+            threshold = np.random.random()
+            if delta>threshold:
+                self.H = new_h
+                self.lattice = new_lattice
+
+
         return
 
     def compute_observables(self):
