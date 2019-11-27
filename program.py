@@ -12,7 +12,7 @@ def main():
     print(model.lattice_size)
     print(model.lattice)
     model.initialize('hot')
-    print(model.lattice)
+    sp = model.lattice[62]
 
 if __name__ == '__main__':
     main()
