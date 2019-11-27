@@ -10,6 +10,15 @@ def main():
     s = [8, 16, 32]
 
     model_cold = md.Model(lattice_size=8, q=4, alpha=1, j=100, m=0)
+    model_cold.initialize("cold")
+    observables = md.Observables(q=4)
+    model_cold.compute_observables(observables)
+    model_cold.n_sweeps(10)
+    model_cold.compute_observables(observables)
+    print(observables.Magnetisation)
+
+'''
+    model_cold = md.Model(lattice_size=8, q=4, alpha=1, j=100, m=0)
     model_hot = copy.copy(model_cold)
     model_cold.initialize("cold")
     model_hot.initialize("hot")
@@ -22,7 +31,7 @@ def main():
         model_cold.n_sweeps(100)
         print("C:" + str(model_cold.H))
         print("H:" + str(model_hot.H))
-
+'''
 
 
 

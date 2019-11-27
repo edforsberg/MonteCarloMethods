@@ -18,17 +18,23 @@ class Spin:
 
 
 class Observables:
-    def __init__(self):
+    def __init__(self, q):
         self.Energy = []
-        self.Magnetisation = []
+        self.Magnetisation = np.empty([q, 0])
+        self.Magnetisation = [self.Magnetisation]
 
-        def add_values(model):
-            self.Energy.append(model.H)
-            magnetisation = 0
+    def add_values(self, model):
+        self.Energy.append(model.H)
+        magnetisation = np.zeros([1, model.Q])
+        #print(magnetisation)
+        for r in range(model.Q):
             for spin in model.lattice:
-                if spin.value == 0:
-                    magnetisation += 1
-            self.Magnetisation.append(magnetisation)
+                if spin.value == r:
+                    magnetisation[0][r] += 1
+       # print(self.Magnetisation)
+        print(np.append(self.Magnetisation, [[magnetisation]]))
+        self.Magnetisation = np.append(self.Magnetisation, [[magnetisation]])
+
 
 
 class Model:
@@ -40,6 +46,7 @@ class Model:
         self.H = 0
         self.beta = j/alpha
         self.alpha = alpha
+       # self.obs = Observables(q)
 
         self.ls_sqr = lattice_size**2
         lattice = np.ndarray((self.ls_sqr,), dtype=np.object)
@@ -92,5 +99,5 @@ class Model:
                 self.H = new_h
                 self.lattice = new_lattice
 
-    def compute_observables(self):
-        Observables.add_values(self)
+    def compute_observables(self, observables):
+        observables.add_values(model=self)
