@@ -17,6 +17,20 @@ class Spin:
         self.neighbours = [neig_l, neig_r, neig_u, neig_d]
 
 
+class Observables:
+    def __init__(self):
+        self.Energy = []
+        self.Magnetisation = []
+
+        def add_values(model):
+            self.Energy.append(model.H)
+            magnetisation = 0
+            for spin in model.lattice:
+                if spin.value == 0:
+                    magnetisation += 1
+            self.Magnetisation.append(magnetisation)
+
+
 class Model:
     def __init__(self, lattice_size, q, alpha, j, m):
         self.ls = lattice_size
@@ -78,8 +92,5 @@ class Model:
                 self.H = new_h
                 self.lattice = new_lattice
 
-
-        return
-
     def compute_observables(self):
-        return
+        Observables.add_values(self)

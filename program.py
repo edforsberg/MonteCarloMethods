@@ -1,6 +1,7 @@
 import initialize as init
 import model as md
 import simulate as sim
+import copy
 
 
 def main():
@@ -8,12 +9,24 @@ def main():
     q = [2, 4, 8, 20]
     s = [8, 16, 32]
 
-    model = md.Model(8, 4,1, 1, 0)
-    print(model.ls)
-    print(model.lattice)
-    model.initialize('hot')
-    delta = model.n_sweeps(9)
-    print(delta)
+    model_cold = md.Model(lattice_size=8, q=4, alpha=1, j=100, m=0)
+    model_hot = copy.copy(model_cold)
+    model_cold.initialize("cold")
+    model_hot.initialize("hot")
+
+    #while model_hot.H > model_cold.H:
+       # model_cold.n_sweeps(100)
+        #model_hot.n_sweeps(100)
+    for i in range(100):
+        model_hot.n_sweeps(100)
+        model_cold.n_sweeps(100)
+        print("C:" + str(model_cold.H))
+        print("H:" + str(model_hot.H))
+
+
+
+
+
 
 if __name__ == '__main__':
     main()
