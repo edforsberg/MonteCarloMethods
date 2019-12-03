@@ -12,10 +12,12 @@ def main():
     model_cold = md.Model(lattice_size=8, q=4, j=0.8, m=0)
     model_cold.initialize("cold")
     observables = md.Observables(q=4)
-    model_cold.compute_observables(observables)
     model_cold.n_sweeps(10)
-    model_cold.compute_observables(observables)
-    print(observables.Magnetisation)
+    #print(observables.Magnetisation)
+    observables.add_values(model_cold)
+    #print(observables.Magnetisation)
+    observables.add_values(model_cold)
+    print(observables.Magnetisation[1])
 
 '''
     model_cold = md.Model(lattice_size=8, q=4, alpha=1, j=100, m=0)
