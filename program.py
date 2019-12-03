@@ -9,7 +9,7 @@ def main():
     q = [2, 4, 8, 20]
     s = [8, 16, 32]
 
-    model_cold = md.Model(lattice_size=8, q=4, alpha=1, j=100, m=0)
+    model_cold = md.Model(lattice_size=8, q=4, j=0.8, m=0)
     model_cold.initialize("cold")
     observables = md.Observables(q=4)
     model_cold.compute_observables(observables)

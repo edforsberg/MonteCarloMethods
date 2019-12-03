@@ -38,14 +38,14 @@ class Observables:
 
 
 class Model:
-    def __init__(self, lattice_size, q, alpha, j, m):
+    def __init__(self, lattice_size, q, j, m):
+        self.alpha = 1
         self.ls = lattice_size
         self.Q = q
         self.J = j
         self.M = m
         self.H = 0
-        self.beta = j/alpha
-        self.alpha = alpha
+        self.beta = j/self.alpha
        # self.obs = Observables(q)
 
         self.ls_sqr = lattice_size**2
