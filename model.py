@@ -24,12 +24,26 @@ class Observables:
 
     def add_values(self, model):
         self.Energy.append(model.H)
-        magnetisation = np.zeros([1, model.Q])
+        magnetisation = np.zeros([1, model.Q]) #have to remove the first row somehow
         for r in range(model.Q):
             for spin in model.lattice:
                 if spin.value == r:
                     magnetisation[0][r] += 1
         self.Magnetisation = np.append(self.Magnetisation, magnetisation, axis=0)
+
+    def calculate_statistics(self):
+        avg_energy = np.sum(self.Energy) / len(self.Energy)
+        std_energy = np.std(self.Energy)
+        statistics_energy = np.array([avg_energy, std_energy])
+
+        avg_magnetisation = np.sum(self.Magnetisation, axis=0)/self.Magnetisation.shape[0]
+        std_magnetisation = np.std(self.Magnetisation, axis=0)
+        arr_ixd = avg_magnetisation.argsort()
+        avg_magnetisation = avg_magnetisation[arr_ixd[::-1]]
+        std_magnetisation = std_magnetisation[arr_ixd[::-1]]
+        statistics_magnetisation = np.concatenate([avg_magnetisation, std_magnetisation])
+
+        return statistics_energy, statistics_magnetisation
 
 
 class Model:
@@ -42,8 +56,8 @@ class Model:
         self.H = 0
         self.beta = j/self.alpha
 
-        self.ls_sqr = lattice_size**2
-        lattice = np.ndarray((self.ls_sqr,), dtype=np.object)
+        self.ls_sqr = int(lattice_size**2)
+        lattice = np.ndarray(self.ls_sqr, dtype=np.object)
         for i in range(self.ls_sqr):
             lattice[i] = Spin(lattice_size, 0, i)
         self.lattice = lattice
