@@ -1,6 +1,5 @@
-import initialize as init
+import numpy as np
 import model as md
-import simulate as sim
 import copy
 
 
@@ -8,7 +7,7 @@ def main():
     ## Global parameters
     q = [2, 4, 8, 20]
     s = [8, 16, 32]
-    nmeas = 10000
+    nmeas = 100
     nskip = 10
 
     model_cold = md.Model(lattice_size=8, q=4, j=0.8, m=0)
@@ -26,6 +25,16 @@ def main():
     for i in range(nmeas):
         model.n_sweeps(nskip)
         observables.add_values(model)
+
+    print([observables.Magnetisation, observables.Energy])
+    write_scv(observables, model)
+
+
+def write_scv(observables, model):
+    name_magnetisation = 'data/Magnetisation_L' + str(model.ls) + 'Q' + str(model.Q) + '.csv'
+    name_energy = 'data/Energy_L' + str(model.ls) + 'Q' + str(model.Q) + '.csv'
+    np.savetxt(name_magnetisation, observables.Magnetisation, delimiter=',', fmt='%i')
+    np.savetxt(name_energy, observables.Energy, delimiter=',', fmt='%i')
 
 
 
