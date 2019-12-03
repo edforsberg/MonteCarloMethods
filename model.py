@@ -25,17 +25,11 @@ class Observables:
     def add_values(self, model):
         self.Energy.append(model.H)
         magnetisation = np.zeros([1, model.Q])
-        #print(magnetisation)
         for r in range(model.Q):
             for spin in model.lattice:
                 if spin.value == r:
                     magnetisation[0][r] += 1
-
-        print(self.Magnetisation)
-        print(magnetisation)
         self.Magnetisation = np.append(self.Magnetisation, magnetisation, axis=0)
-        print(self.Magnetisation)
-
 
 
 class Model:
@@ -47,7 +41,6 @@ class Model:
         self.M = m
         self.H = 0
         self.beta = j/self.alpha
-       # self.obs = Observables(q)
 
         self.ls_sqr = lattice_size**2
         lattice = np.ndarray((self.ls_sqr,), dtype=np.object)
@@ -64,7 +57,7 @@ class Model:
             for spin in self.lattice:
                 for n in spin.neighbours:
                     if spin.value == self.lattice[n].value:
-                        h -= 1
+                        h += 1
             self.H = h
 
         elif mode == 'hot':
@@ -75,7 +68,7 @@ class Model:
             for spin in self.lattice:
                 for n in spin.neighbours:
                     if spin.value == self.lattice[n].value:
-                        h -= 1
+                        h += 1
             self.H = h
 
         else:
@@ -92,11 +85,11 @@ class Model:
             for spin in new_lattice:
                 for n in spin.neighbours:
                     if spin.value == self.lattice[n].value:
-                        new_h -= 1
+                        new_h += 1
 
-            delta = math.exp(-self.beta*(new_h-self.H))
+            delta = math.exp(-self.J*(new_h-self.H))
             threshold = np.random.random()
-            if delta>threshold:
+            if delta > threshold:
                 self.H = new_h
                 self.lattice = new_lattice
 
