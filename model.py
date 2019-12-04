@@ -29,7 +29,8 @@ class Observables:
             for spin in model.lattice:
                 if spin.value == r:
                     magnetisation[0][r] += 1
-        self.Magnetisation = np.append(self.Magnetisation, magnetisation, axis=0)
+        #self.Magnetisation = np.append(self.Magnetisation, magnetisation, axis=0)
+        self.Magnetisation = np.vstack([self.Magnetisation, magnetisation])
 
     def calculate_statistics(self):
         avg_energy = np.sum(self.Energy) / len(self.Energy)

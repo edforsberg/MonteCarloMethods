@@ -2,30 +2,25 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-q = 4
-s = 32
+q = 2
+s = 8
 jc = m.log(1+m.sqrt(q))
-js = np.linspace(jc/2, 1.5*jc, num=20)
+js = np.linspace(jc/2, 1.5*jc, num=15)
 
 name_magnetisation = 'data/magnetisation_L' + str(s) + 'Q' + str(q) + '.csv'
 name_energy = 'data/energy_L' + str(s) + 'Q' + str(q) + '.csv'
 
 data_energy = np.genfromtxt(name_energy, delimiter=',')
-data_magnetisation = np.genfromtxt(name_magnetisation, delimiter=',')#.transpose()
-
-
-print(data_magnetisation[4])
-print(js)
-
+data_magnetisation = np.genfromtxt(name_magnetisation, delimiter=',')
 
 fig, ax = plt.subplots()
 ax.errorbar(js, data_energy[0],
             yerr=data_energy[1],
             fmt='-o')
 
-ax.set_xlabel('x-axis')
-ax.set_ylabel('y-axis')
-ax.set_title('Line plot with error bars')
+ax.set_xlabel('J')
+ax.set_ylabel('<E>/V')
+ax.set_title('Energy, q='+str(q)+', lattice_size = '+str(s)+', 1E5 measurements')
 
 fig, ax = plt.subplots()
 for i in range(q):
@@ -33,10 +28,9 @@ for i in range(q):
                 yerr=data_magnetisation[q+i],
                 fmt='-o')
 
-ax.set_xlabel('x-axis')
-ax.set_ylabel('y-axis')
-ax.set_title('Line plot with error bars')
+ax.set_xlabel('J')
+ax.set_ylabel('<Mr>/V')
+ax.set_title('Magnetisation, q='+str(q)+', lattice_size = '+str(s)+', 1E5 measurements')
 
 
 plt.show()
-
