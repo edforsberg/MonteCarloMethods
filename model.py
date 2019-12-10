@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import copy
 
 
 class Spin:
@@ -90,21 +91,22 @@ class Model:
             return "mode must be set to cold or hot!"
 
     def n_sweeps(self, nr_sweeps):
-        for n in range(nr_sweeps):
-            new_spin = np.random.randint(0, self.Q)
-            site = np.random.randint(0, self.ls_sqr)
+        for i in range(nr_sweeps):
+            for site in range(len(self.lattice)):
 
-            new_lattice = self.lattice
-            new_lattice[site].value = new_spin
-            new_h = 0
-            for spin in new_lattice:
-                for n in spin.neighbours:
-                    if spin.value == self.lattice[n].value:
-                        new_h += 1
+                new_spin = np.random.randint(0, self.Q)
+                new_lattice = copy.copy(self.lattice)
+                new_lattice[site].value = new_spin
+                new_h = 0
 
-            delta = math.exp(-self.J*(new_h-self.H))
-            threshold = np.random.random()
-            if delta > threshold:
-                self.H = new_h
-                self.lattice = new_lattice
+                for spin in new_lattice:
+                    for n in spin.neighbours:
+                        if spin.value == self.lattice[n].value:
+                            new_h += 1
+
+                    delta = math.exp(-self.J*(new_h-self.H))
+                    threshold = np.random.random()
+                    if delta > threshold:
+                        self.H = new_h
+                        self.lattice = new_lattice
 

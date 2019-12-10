@@ -10,7 +10,7 @@ def main():
     s = 8
     jc = mt.log(1+mt.sqrt(q))
     js = np.linspace(jc/3, 2*jc, num=15)
-    nmeas = 1000
+    nmeas = 100
     nskip = 10
 
     data_energy = np.empty([0, 2])
