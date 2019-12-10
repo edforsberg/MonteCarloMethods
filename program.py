@@ -6,13 +6,13 @@ import math as mt
 
 def main():
     ## Global parameters
-    q = 10
-    s = 8
+    q = 60
+    s = 30
     jc = mt.log(1+mt.sqrt(q))
-    js = np.linspace(jc*0.6, 1.4*jc, num=20)
-    nmeas = 1000
+    js = np.linspace(0, 2*jc, num=20)
+    nmeas = 100
     nskip = 10
-    nequi = 1000
+    nequi = 100
 
     data_energy = np.empty([0, 2])
     data_magnetisation = np.empty([0, 2*q])

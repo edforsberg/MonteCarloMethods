@@ -111,7 +111,7 @@ class Model:
                 if np.random.random() < delta:
                     self.lattice[i].value = new_spin
                     self.H = self.H-sum_
-                    print(self.H)
+                   # print(self.H)
 
 
 
