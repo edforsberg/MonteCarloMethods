@@ -2,11 +2,11 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-q = 2
+q = 10
 s = 8
 jc = m.log(1+m.sqrt(q))
 print('j_crit=' + str(jc))
-js = np.linspace(jc/2, 1.5*jc, num=15)
+js = np.linspace(jc/0.6, 1.4*jc, num=20)
 
 name_magnetisation = 'data/magnetisation_L' + str(s) + 'Q' + str(q) + '.csv'
 name_energy = 'data/energy_L' + str(s) + 'Q' + str(q) + '.csv'

@@ -3,6 +3,13 @@ import math
 import copy
 
 
+def kronecker(a, b):
+    if a == b:
+        return 1
+    else:
+        return 0
+
+
 class Spin:
     def __init__(self, lattice_size, value, position):
         ls = lattice_size
@@ -91,22 +98,20 @@ class Model:
             return "mode must be set to cold or hot!"
 
     def n_sweeps(self, nr_sweeps):
-        for i in range(nr_sweeps):
-            for site in range(len(self.lattice)):
+        for n in range(nr_sweeps):
+            for i in range(self.ls):
+                new_spin = np.random.randint(self.Q)
+                spin = self.lattice[i]
+                sum_ = 0
+                for j in range(4):
+                    sum_ = sum_ + kronecker(new_spin, self.lattice[spin.neighbours[j]].value) \
+                           - kronecker(spin.value, self.lattice[spin.neighbours[j]].value)
 
-                new_spin = np.random.randint(0, self.Q)
-                new_lattice = copy.copy(self.lattice)
-                new_lattice[site].value = new_spin
-                new_h = 0
+                delta = np.exp(self.J*sum_)
+                if np.random.random() < delta:
+                    self.lattice[i].value = new_spin
+                    self.H = self.H-sum_
+                    print(self.H)
 
-                for spin in new_lattice:
-                    for n in spin.neighbours:
-                        if spin.value == self.lattice[n].value:
-                            new_h += 1
 
-                    delta = math.exp(-self.J*(new_h-self.H))
-                    threshold = np.random.random()
-                    if delta > threshold:
-                        self.H = new_h
-                        self.lattice = new_lattice
 
