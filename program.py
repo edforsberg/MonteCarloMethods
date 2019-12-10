@@ -36,7 +36,7 @@ def main():
         e, m = observables.calculate_statistics()
         data_energy = np.vstack([data_energy, e])
         data_magnetisation = np.vstack([data_magnetisation, m])
-        print(j)
+        print('j=' + str(j))
 
     data_energy = data_energy.transpose()/s
     data_magnetisation = data_magnetisation.transpose()/s

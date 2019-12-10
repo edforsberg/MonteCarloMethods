@@ -9,10 +9,10 @@ class Spin:
         self.value = value
         q, r = divmod(pos, ls)
 
-        neig_l = r-1+q*ls if r-1 > 1 else lattice_size-1+q*ls
+        neig_l = r-1+q*ls if r > 0 else ls-1+q*ls
         neig_r = r+1+q*ls if r+1 < ls else q*ls
         neig_u = (q+1)*ls+r if q+1 < ls else r
-        neig_d = (q-1)*ls+r if q-1 > 0 else r+ls*(ls-1)
+        neig_d = (q-1)*ls+r if q > 0 else r+ls*(ls-1)
 
         self.neighbours = [neig_l, neig_r, neig_u, neig_d]
 
