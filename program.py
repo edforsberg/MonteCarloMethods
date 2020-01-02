@@ -6,10 +6,10 @@ import math as mt
 
 def main():
     ## Global parameters
-    q = 4
-    s = 60
+    q = 16
+    s = 200
     jc = mt.log(1+mt.sqrt(q))
-    js = np.linspace(0, 2*jc, num=20)
+    js = np.linspace(0.2, 1.3*jc, num=20)
     nmeas = 500
     nskip = 10
     nequi = 100

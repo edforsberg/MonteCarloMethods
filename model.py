@@ -31,7 +31,7 @@ class Observables:
         self.Magnetisation = np.empty([0, q])
 
     def add_values(self, model):
-        self.Energy.append(model.H)
+        self.Energy.append(-model.H)
         magnetisation = np.zeros([1, model.Q]) #have to remove the first row somehow
         for r in range(model.Q):
             for spin in model.lattice:
