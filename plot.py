@@ -2,11 +2,11 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-q = 60
-s = 30
+q = 4
+s = 60
 jc = m.log(1+m.sqrt(q))
 print('j_crit=' + str(jc))
-js = np.linspace(0, 1.3*jc, num=20)
+js = np.linspace(0, 2*jc, num=20)
 
 name_magnetisation = 'data/magnetisation_L' + str(s) + 'Q' + str(q) + '.csv'
 name_energy = 'data/energy_L' + str(s) + 'Q' + str(q) + '.csv'
@@ -22,6 +22,12 @@ ax.errorbar(js, data_energy[0],
 ax.set_xlabel('J')
 ax.set_ylabel('<E>/V')
 ax.set_title('Energy, q='+str(q)+', lattice_size = '+str(s)+', 1E5 measurements')
+locs, _ = plt.xticks()
+labels = np.append([str(round(i,2)) for i in locs], 'Jc')
+locs = np.append(locs, jc)
+plt.xticks(locs, labels)
+
+#plt.xticks([jc], ['jc'])
 
 fig, ax = plt.subplots()
 for i in range(q):
