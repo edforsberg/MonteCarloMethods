@@ -31,7 +31,7 @@ class Observables:
         self.Magnetisation = np.empty([0, q])
 
     def add_values(self, model):
-        self.Energy.append(-model.H)
+        self.Energy.append(model.H)
         magnetisation = np.zeros([1, model.Q]) #have to remove the first row somehow
         for r in range(model.Q):
             for spin in model.lattice:
@@ -81,7 +81,7 @@ class Model:
                 for n in spin.neighbours:
                     if spin.value == self.lattice[n].value:
                         h += 1
-            self.H = h
+            self.H = h*self.alpha
 
         elif mode == 'hot':
             for spin in self.lattice:
@@ -92,14 +92,14 @@ class Model:
                 for n in spin.neighbours:
                     if spin.value == self.lattice[n].value:
                         h += 1
-            self.H = h
+            self.H = h*self.alpha
 
         else:
             return "mode must be set to cold or hot!"
 
     def n_sweeps(self, nr_sweeps):
         for n in range(nr_sweeps):
-            for i in range(self.ls):
+            for i in range(self.ls_sqr):
                 new_spin = np.random.randint(self.Q)
                 spin = self.lattice[i]
                 sum_ = 0
@@ -110,4 +110,4 @@ class Model:
                 delta = np.exp(self.J*sum_)
                 if np.random.random() < delta:
                     self.lattice[i].value = new_spin
-                    self.H = self.H-sum_
+                    self.H = self.H+sum_*2*self.alpha

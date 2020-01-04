@@ -6,11 +6,11 @@ import math as mt
 
 def main():
     ## Global parameters
-    q = 16
-    s = 200
+    q = 4
+    s = 16
+    nmeas = 10000
     jc = mt.log(1+mt.sqrt(q))
-    js = np.linspace(0.2, 1.3*jc, num=20)
-    nmeas = 500
+    js = np.linspace(0.65*jc, 1.3*jc, num=15)
     nskip = 10
     nequi = 100
 
@@ -20,18 +20,22 @@ def main():
     for j in js:
 
         observables = md.Observables(q=q)
-        '''
+
+        """
         model_cold = md.Model(lattice_size=s, q=q, j=j, m=0)
-        model_hot = copy.copy(model_cold)
+        model_hot = md.Model(lattice_size=s, q=q, j=j, m=0)
         model_cold.initialize("cold")
         model_hot.initialize("hot")
         
-
-        while model_cold.H < model_hot.H:
+        
+        equi_runs = 0
+        while model_cold.H > model_hot.H:
             model_hot.n_sweeps(nskip)
             model_cold.n_sweeps(nskip)
-            
-        '''
+            equi_runs += 1        
+
+        model = copy.deepcopy(model_cold)
+        """
 
         model = md.Model(lattice_size=s, q=q, j=j, m=0)
         for i in range(nequi):
@@ -46,8 +50,8 @@ def main():
         data_magnetisation = np.vstack([data_magnetisation, m])
         print('j=' + str(j))
 
-    data_energy = data_energy.transpose()/s
-    data_magnetisation = data_magnetisation.transpose()/s
+    data_energy = data_energy.transpose()/(s**2)
+    data_magnetisation = data_magnetisation.transpose()/(s**2)
     write_scv(data_magnetisation, name='magnetisation', model=model)
     write_scv(data_energy, name='energy', model=model)
 
