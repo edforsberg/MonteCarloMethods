@@ -6,7 +6,7 @@ import math as mt
 
 def main():
     ## Global parameters
-    q = 4
+    q = 8
     s = 16
     nmeas = 10000
     jc = mt.log(1+mt.sqrt(q))
