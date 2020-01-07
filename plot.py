@@ -2,8 +2,8 @@ import numpy as np
 import math as m
 import matplotlib.pyplot as plt
 
-q = 8
-s = 16
+q = 2
+s = 8
 nmeas = 10000
 jc = m.log(1+m.sqrt(q))
 print('j_crit=' + str(jc))
@@ -22,9 +22,9 @@ ax.errorbar(js, data_energy[0],
 
 ax.set_xlabel('J')
 ax.set_ylabel('<E>/V')
-ax.set_title('Energy, q='+str(q)+', lattice_size = '+str(s)+', 1E4 measurements')
+ax.set_title('Energy, q='+str(q)+', lattice_size = '+str(s)+', 1E5 measurements')
 locs, _ = plt.xticks()
-locs = np.delete(locs, 5)
+#locs = np.delete(locs, 5)
 labels = np.append([str(round(i, 2)) for i in locs], 'Jc')
 locs = np.append(locs, jc)
 plt.xticks(locs, labels)
@@ -37,9 +37,9 @@ for i in range(q):
 
 ax.set_xlabel('J')
 ax.set_ylabel('<Mr>/V')
-ax.set_title('Magnetisation, q='+str(q)+', lattice_size = '+str(s)+', 1E4 measurements')
+ax.set_title('Magnetisation, q='+str(q)+', lattice_size = '+str(s)+', 1E5 measurements')
 locs, _ = plt.xticks()
-locs = np.delete(locs, 5)
+#locs = np.delete(locs, 5)
 labels = np.append([str(round(i, 2)) for i in locs], 'Jc')
 locs = np.append(locs, jc)
 plt.xticks(locs, labels)
