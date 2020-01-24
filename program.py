@@ -7,7 +7,7 @@ import math as mt
 def main():
     ## Global parameters
     q = 2
-    s = 8
+    s = 16
     nmeas = 10000
     jc = mt.log(1+mt.sqrt(q))
     js = np.linspace(0.65*jc, 1.3*jc, num=15)
